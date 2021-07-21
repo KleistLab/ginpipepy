@@ -51,9 +51,6 @@ class VCFreader:
 							posit = int(spl[0])
 							if not posit in masking_list:
 								new_str.append(pos)
-							else:
-								print("Found masking position:")
-								print(posit)
 						new_str_j = '-'.join(new_str)
 						newSeqSet.append((seq[0],new_str_j))
 					else:
