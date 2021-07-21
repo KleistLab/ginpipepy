@@ -40,6 +40,9 @@ class VCFreader:
 							posit = int(spl[0])
 							if not posit in masking_list:
 								new_str.append(pos)
+							else:
+								print("Found masking position:")
+								print(posit)
 						new_str_j = '-'.join(new_str)
 						print("Old CIGAR:")
 						print(seq[1])
