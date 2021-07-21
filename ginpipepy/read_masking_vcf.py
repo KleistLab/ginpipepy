@@ -18,6 +18,7 @@ class VCFreader:
 
 	def _getMaskingFromVCF(self):
 		vcfile = vcf.Reader(open(self.filename),'r')
+		print(vcfile)
 		masking_list = []
 		for record in vcfile:
 			operation = record.INFO
