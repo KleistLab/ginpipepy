@@ -41,6 +41,10 @@ class VCFreader:
 							if not posit in masking_list:
 								new_str.append(pos)
 						new_str_j = '-'.join(new_str)
+						print("Old CIGAR:")
+						print(seq[1])
+						print("New CIGAR:")
+						print(new_str_j)
 						newSeqSet.append((seq[0],new_str_j))
 					else:
 						newSeqSet.append(seq)
