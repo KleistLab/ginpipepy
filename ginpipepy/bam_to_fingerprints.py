@@ -14,6 +14,14 @@ from Bio import SeqIO
 class SAMtoFP:
 
     def __init__(self, filename, reffile, refname):
+        '''Class: turn CIGAR strings in SAM files into sequence fingerprints
+        :param filename: path tto SAM/BAM file
+        :type filename: str
+        :param reffile: path to reference FASTA file
+        :type reffile: str
+        :param refname: name of reference sequence
+        :type refname: str
+        '''
         self.filename = filename
         self.reference = reffile
         self.ref_name = refname
@@ -22,8 +30,11 @@ class SAMtoFP:
         """
         Calls ambiguous bases if reference base is not included in the possible calls
         :param base: ambiguous base
+        :type base: str
         :param refbase: reference base
-        :return variant: what base to call
+        :type refbase: str
+        :returns variant: what base to call
+        :rtype: string char
         """
         ambdict = {'W':['T','A'],
                    'S':['C','G'],
@@ -73,13 +84,20 @@ class SAMtoFP:
             X (mismatch) = 8
             B (back) = 9
         :param seq: query sequence
+        :type seq: str
         :param cigar: cigar string as pysam cigar table
+        :type cigar: list
         :param start: position on query where the query starts
+        :type start: int
         :param name: name of query sequence
-        :return mutantsstrbase: fingerprints per sequence as one string
-        :return mutants_pos_list: fingerprints per sequence as list of strings
-        :return mutants_pairs_list: fingerprints per sequence as pairs of
+        :type name: str
+        :returns mutantsstrbase: fingerprints per sequence as one string
+        :rtype: list
+        :returns mutants_pos_list: fingerprints per sequence as list of strings
+        :rtype: list
+        :returns mutants_pairs_list: fingerprints per sequence as pairs of
             sequence positions and mutant bases
+        :rtype: list
         """
         # SeqIO the reference file
         ref_fasta = SeqIO.parse(open(self.reference),'fasta')
@@ -157,11 +175,14 @@ class SAMtoFP:
     def writeFP(self):
         """
         Write sequence fingerprints from CIGAR format in BAM file
-        :return sequences_list_base: fingerprints per bin per sequence as one string
-        :return sequence_pos_list: fingerprints per bin per sequence as list of strings
-        :return sequence_pair_list: fingerprints per bin per sequence as pairs of
+        :returns sequences_list_base: fingerprints per bin per sequence as one string
+        :returns sequence_pos_list: fingerprints per bin per sequence as list of strings
+        :rtype: list
+        :returns sequence_pair_list: fingerprints per bin per sequence as pairs of
             sequence positions and mutant bases
-        :return lref: length of reference sequence
+        :rtype: list
+        :returns lref: length of reference sequence
+        :rtype: int
         """
         # Write positions with mutant base as string
         sequences_list_base = []

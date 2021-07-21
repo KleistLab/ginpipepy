@@ -23,6 +23,16 @@ from scipy import optimize
 class analyzeTrajectory:
 
     def __init__(self, dict_traj, mut_proportion, num_days_per_bin, initSeq):
+        '''Class: calculate point-wise constant effective population size estimate
+        :param dict_traj: list of sequence fingerprints in format ('id','MUT_POS_1>MUT_BASE-MUT_POS_2>MUT_BASE-...')  
+        :type dict_traj: list
+        :param mut_proportion: proportion of mutant bases in entire data set
+        :type mut_proportion: float
+        :param num_days_per_bin: list of number of days hat each bin in dict_traj is spanning
+        :type num_days_per_bin: list[int]
+        :param initSeq: initial sequence
+        :type initSeq: str
+        '''
         self.dict_traj = dict_traj
         self.initSeq = initSeq
         self.mut_proportion = mut_proportion
@@ -34,9 +44,12 @@ class analyzeTrajectory:
         before current bin
         :param mutSeq: dictionary with key - sequence, value - list of length
         t - number of bins, with 1 if sequence present in the bin and 0 otherwise
+        :type mutSeq: dict
         :param mutantsCount: list of length t - number of bins, with
         number of mutant sequences in bin
-        :return: list of length t - number of unique first occuring sequences in bin
+        :type mutantsCount: list
+        :returns: list of length t - number of unique first occuring sequences in bin
+        :rtype: list
         '''
         origins = []
         firstOcc = np.zeros(len(mutSeq))
@@ -68,7 +81,9 @@ class analyzeTrajectory:
         t - number of bins, with 1 if sequence present in the bin and 0 otherwise
         :param mutantsCount: list of lengtth t - number of bins, with
         number of mutant sequences in bin
-        :return: list of length t - number of unique sequences in bin
+        :type mutSeq: dict
+        :returns: list of length t - number of unique sequences in bin
+        :rtype: list
         '''
         origins = []
         occurence = [[] for i in range(len(mutSeq))]
@@ -86,9 +101,13 @@ class analyzeTrajectory:
         '''
         Function of the estimate for root finding
         :param nu: number of origins
+        :type nu: int
         :param ns: number of mutant sequences
+        :type ns: int
         :param x: param to optimise
-        :return: float
+        :type x: float
+        :returns: population size estimate
+        :rtype: float
         '''
         a = float(x*np.log(1+ns/x))
         b = np.math.factorial(nu)
@@ -102,9 +121,13 @@ class analyzeTrajectory:
         '''
         Function of the estimate for root finding
         :param nu: number of origins
+        :type nu: int
         :param ns: number of mutant sequences
+        :type ns: int
         :param x: param to optimise
-        :return: float
+        :type x: float
+        :returns: population size estimate
+        :rtype: float
         '''
         return (nu-(x*np.log(1+ns/x)))**2
 
@@ -112,8 +135,11 @@ class analyzeTrajectory:
         """
         Optimization routines
         :param nu: number of origins
+        :type nu: int
         :param ns: number of mutant sequences
-        :return: float
+        :type ns: int
+        :returns: optimal population size estimate
+        :rtype: float
         """
         # Constraint
         con1 = {'type': 'ineq', 'fun': lambda x: x}
@@ -134,10 +160,11 @@ class analyzeTrajectory:
         Count mutant sequences per bin and creates sequence dictionary with
         bin indices where the mutant was found.
         :param:
-        :return: thetas list - parameter estimates; list variance - variance estimates
+        :returns: thetas list - parameter estimates; list variance - variance estimates
         from maximum likelihood estimate, variance_size - 1/size_of_bin, num_mut - number of
         mutants per bin, num_seqs - number of sequences per bin, origins - number
         of origins per bin
+        :rtype: list
         """
         # Number of (mutated) sequences
         num_mut = []

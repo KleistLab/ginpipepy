@@ -22,6 +22,21 @@ strptime = datetime.datetime.strptime
 
 class SAM:
     def __init__(self, samfile_path, bins_dir, meta_dir, num_per_bin, days_per_bin, seq_name):
+        '''Class implementing splitting of SAM file into temporal bins
+        :param samfile_path: path to SAM/BAM file containing he entire data set
+        :type samfile_path: str
+        :param bins_dir: directory where the bins will be written to and stored
+        :type bins_dir: str
+        :param meta_dir: directory where meta-information about binning will be stored
+        :type meta_dir: str
+        :param num_per_bin: parameter list of number of sequences per bin - defines binning modes per size 
+        :type num_per_bin: list[int]
+        :param days_per_bin: parameter list of number of days per bin - defines binning modes per number of days 
+        :type days_per_bin: list[int]
+        :param seq_name: name of reference sequence that the sequence set was aligned tto
+        :type seq_name: str
+        :rtype: dict
+        '''
         self.samfile_path = samfile_path
         self.bins_dir = bins_dir
         self.meta_dir = meta_dir
@@ -48,7 +63,8 @@ class SAM:
     def _create_sequence_map(self):
         '''
         WORKAROUND: make binning faster, by mapping for each unique sequence its index
-        :return: sequence dictionary
+        :returns: sequence dictionary
+        :rtype: dict
         '''
         # crate map of each sequence where to find it
         seq_dict = {}
@@ -72,7 +88,8 @@ class SAM:
         """Extracts headers, dates and index from a samfile
         Extracts headers, dates, index from samfile, sorts them by date and adds them to a dictionary
         Dictionary keys contain the index from the sorted dates, values are header, date, index
-        :return: dict[sorted_index]={header:string, date:string, index:int}
+        :returns: dict[sorted_index]={header:string, date:string, index:int}
+        :rtype: dict
         """
         idx_dates = []
         index = 0
@@ -114,9 +131,16 @@ class SAM:
     def _create_filenames(self, folder, n_bins, infix=None):
         """Creates folder, files and returns filenames
 
-        :param method: string
-        :param n_bins: int
-        :return:
+        :param method: name of folder/binning method
+        :type method: str
+        :param n_bins: number of bins
+        :type n_bins: int
+        :returns filenames_bin: names of files for binning 
+        :rtype: list
+        :returns filenames_header: names of files for binning headers
+        :rtype: list
+        :returns filenames_range: names of files for binning date ranges
+        :rtype: list
         """
         filepath = self.bins_dir / folder
         basename = os.path.basename(self.samfile_path)
@@ -206,7 +230,7 @@ class SAM:
     def bin_eq_size_names(self):
         """Creates bins of equal size (n=10), but files with same name are treated as one
 
-        :return:
+        :returns:
         """
         print(f"Reads per bin: {self.eq_num_param}")
 
@@ -247,8 +271,9 @@ class SAM:
     def bin_eq_days(self, fuzzy=False):
         """Create bins containing equal number of days
 
-        :param fuzzy:
-        :return:
+        :param fuzzy: run fuzzy binning - sequences on border dates of bins assigned to bins randomly
+        :type fuzzy: bool
+        :returns:
         """
         if fuzzy:
             folder = f"fuzzy_days"
@@ -306,7 +331,7 @@ class SAM:
 
     def bin_cal_week(self):
         """Binning by calendar week
-        :return:
+        :returns:
         """
         n_reads = len(self.sam_dict)
         date_format = "%Y-%m-%d"

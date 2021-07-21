@@ -10,16 +10,24 @@ Created on Mon Nov 30 12:50:41 2020
 
 class parameterEstimation:
 
-    def __init__(self, seqSets, digitSeqSets, reffile, freqCutoff):
+    def __init__(self, seqSets, reffile, freqCutoff):
+        '''Class: filtering of sequence fingerprints based on desired base frequency
+        :param seqSets: list of sequence fingerprints in format ('id','MUT_POS_1>MUT_BASE-MUT_POS_2>MUT_BASE-...')  
+        :type seqSets: list
+        :param reffile: path to reference FASTA file
+        :type reffile: str
+        :param freqCutoff: frequency cutoff (as count) for excluding mutants from fingerprints
+        :type freqCutoff: int
+        '''
         self.seqSets = seqSets
-        self.digitSeqSets = digitSeqSets
         self.freqCutoff = freqCutoff
         self.reffile = reffile
 
     def _getAltPosCounts(self):
         """
         Get number of mutant bases in reference by sequence fingerprints
-        :return positions: dictionary (position,number_of_mutants) 
+        :returns positions: dictionary (position,number_of_mutants) 
+        :rtype: dict
         """
         # Aggregate all mutant positions in a dictionary
         positions = dict()
@@ -44,8 +52,11 @@ class parameterEstimation:
         """
         Count mutant sequences in sample
         :param seqSets: set of bins of sequence fingerprints
-        :return mut_count: list of mutant sequences counts per bin
-        :return num_seqs: list of number of sequences per bin
+        :type seqSets: list
+        :returns mut_count: list of mutant sequences counts per bin
+        :rtype: int
+        :returns num_seqs: list of number of sequences per bin
+        :rtype: int
         """
         mut_count = 0
         num_seqs = 0
@@ -66,7 +77,8 @@ class parameterEstimation:
         """
         Filter our mutant positions that only occur few times in entire sample
         frequency cutoff defined by user via config
-        :return filteredSeqSets: sequence fingerprints without singletons
+        :returns filteredSeqSets: sequence fingerprints without singletons
+        :rtype: list
         """
         filteredSeqSets = []
         # First identify positions that pop up below a threshold
@@ -108,9 +120,11 @@ class parameterEstimation:
     def run(self):
         """
         Run filter - remove variants that are below predefined cutoff
-        :return mut_count_post/num_seqs_post: mutant sequences proportion
-        :return filteredSets1: sequences set filtered based on mutant positions
+        :returns mut_count_post/num_seqs_post: mutant sequences proportion
+        :rtype: float
+        :returns filteredSets1: sequences set filtered based on mutant positions
             frequency cutoff
+        :rtype: list
         """
         # In one of the trajectories - count mutants and number of sequences
         mut_count_pre, num_seqs_pre = self._countMutants(self.seqSets)
