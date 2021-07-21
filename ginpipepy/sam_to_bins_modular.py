@@ -23,7 +23,7 @@ strptime = datetime.datetime.strptime
 class SAM:
     def __init__(self, samfile_path, bins_dir, meta_dir, num_per_bin, days_per_bin, seq_name):
         '''Class implementing splitting of SAM file into temporal bins
-        :param samfile_path: path to SAM/BAM file containing he entire data set
+        :param samfile_path: path to SAM/BAM file containing the entire data set
         :type samfile_path: str
         :param bins_dir: directory where the bins will be written to and stored
         :type bins_dir: str
@@ -33,7 +33,7 @@ class SAM:
         :type num_per_bin: list[int]
         :param days_per_bin: parameter list of number of days per bin - defines binning modes per number of days 
         :type days_per_bin: list[int]
-        :param seq_name: name of reference sequence that the sequence set was aligned tto
+        :param seq_name: name of reference sequence that the sequence set was aligned to
         :type seq_name: str
         :rtype: dict
         '''
