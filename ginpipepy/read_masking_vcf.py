@@ -49,6 +49,7 @@ class VCFreader:
 						print(seq[1])
 						print("New CIGAR:")
 						print(new_str_j)
+						print("\n")
 						newSeqSet.append((seq[0],new_str_j))
 					else:
 						newSeqSet.append(seq)
