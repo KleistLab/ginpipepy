@@ -47,6 +47,7 @@ class VCFreader:
 								print(posit)
 						new_str_j = '-'.join(new_str)
 						print("Old CIGAR:")
+						print(seq[0])
 						print(seq[1])
 						print("New CIGAR:")
 						print(new_str_j)
