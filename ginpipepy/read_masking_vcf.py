@@ -20,7 +20,9 @@ class VCFreader:
 		vcfile = vcf.Reader(open(self.filename),'r')
 		masking_list = []
 		for record in vcfile:
+			print(record)
 			operation = record.FILTER
+			print(operation)
 			if str(operation)=='mask':
 				masking_list.append(int(record.POS))
 		return masking_list
