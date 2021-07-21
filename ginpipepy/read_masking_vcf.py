@@ -22,7 +22,7 @@ class VCFreader:
 		for record in vcfile:
 			operation = record.INFO
 			if str(operation)=='mask':
-				masking_list.append(record.POS)
+				masking_list.append(int(record.POS))
 		return masking_list
 
 	def maskBasesInFP(self):
