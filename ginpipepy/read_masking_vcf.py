@@ -21,7 +21,7 @@ class VCFreader:
 		print(vcfile)
 		masking_list = []
 		for record in vcfile:
-			operation = record.INFO
+			operation = record.FILTER
 			if str(operation)=='mask':
 				masking_list.append(int(record.POS))
 		return masking_list
