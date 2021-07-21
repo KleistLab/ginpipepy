@@ -18,7 +18,6 @@ class VCFreader:
 
 	def _getMaskingFromVCF(self):
 		vcfile = vcf.Reader(open(self.filename),'r')
-		print(vcfile)
 		masking_list = []
 		for record in vcfile:
 			operation = record.FILTER
@@ -28,6 +27,7 @@ class VCFreader:
 
 	def maskBasesInFP(self):
 		masking_list = self._getMaskingFromVCF()
+		print("m\n")
 		print(masking_list)
 		newSeqSets = []
 		for t, seqSet in enumerate(self.fp_dict):
@@ -46,11 +46,6 @@ class VCFreader:
 								print("Found masking position:")
 								print(posit)
 						new_str_j = '-'.join(new_str)
-						print("Old CIGAR:")
-						print(seq[1])
-						print("New CIGAR:")
-						print(new_str_j)
-						print("\n")
 						newSeqSet.append((seq[0],new_str_j))
 					else:
 						newSeqSet.append(seq)
