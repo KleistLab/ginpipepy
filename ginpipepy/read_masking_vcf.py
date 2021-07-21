@@ -27,6 +27,7 @@ class VCFreader:
 
 	def maskBasesInFP(self):
 		masking_list = self._getMaskingFromVCF()
+		print(masking_list)
 		newSeqSets = []
 		for t, seqSet in enumerate(self.fp_dict):
 			if len(seqSet)!=0:
