@@ -1,0 +1,8 @@
+##fileformat=VCFv4.3
+##reference=initialSequence
+##contig=<ID=initialSequence,length=200>
+##FILTER=<ID=mask,Description="Masked site">
+##INFO=<ID=EXC,Number=.,Type=String,Description="List of reasons for mask/caution">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO
+initialSequence	70	.	G	.	.	mask	EXC=error
+initialSequence	108	.	C	.	.	mask	EXC=error
