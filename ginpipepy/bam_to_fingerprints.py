@@ -1,34 +1,44 @@
 #bam_to_fingerprints.py
 
 """
+Tranlsate CIGAR strings to fingerprint strings.
+
 Created on Mon Jul 13 15:05:41 2020
 
 @author: Maria Trofimova
 """
+
 import pysam
 import random
 import numpy as np
 from Bio import SeqIO
 
-
 class SAMtoFP:
+    """
+    SAMtoFP class.
+
+    Tranlsate CIGAR strings to fingerprint strings    
+    """
 
     def __init__(self, filename, reffile, refname):
-        '''Class: turn CIGAR strings in SAM files into sequence fingerprints
-        :param filename: path tto SAM/BAM file
+        """
+        Turn CIGAR strings in SAM files into sequence fingerprints.
+
+        :param filename: path to SAM/BAM file
         :type filename: str
         :param reffile: path to reference FASTA file
         :type reffile: str
         :param refname: name of reference sequence
         :type refname: str
-        '''
+        """
         self.filename = filename
         self.reference = reffile
         self.ref_name = refname
 
     def _ambiguousDict(self, base, refbase):
         """
-        Calls ambiguous bases if reference base is not included in the possible calls
+        Call ambiguous bases if reference base is not included in the possible calls.
+
         :param base: ambiguous base
         :type base: str
         :param refbase: reference base
@@ -68,9 +78,10 @@ class SAMtoFP:
 
     def _cigarToFP(self, seq, cigar, start, name):
         """
-        Translates CIGAR strings to sequence fingerprints in format
-        Position>Mutant_base
-        CIGAR string signatures are taken in form of Pysam cigartuple in format:
+        Translate CIGAR strings to sequence fingerprints in format.
+
+            Position>Mutant_base
+            CIGAR string signatures are taken in form of Pysam cigartuple in format:
             (operation,length)
         Key list:
             M (mis-match) = 0
@@ -83,6 +94,7 @@ class SAMtoFP:
             = (match) = 7
             X (mismatch) = 8
             B (back) = 9
+
         :param seq: query sequence
         :type seq: str
         :param cigar: cigar string as pysam cigar table
@@ -174,7 +186,8 @@ class SAMtoFP:
 
     def writeFP(self):
         """
-        Write sequence fingerprints from CIGAR format in BAM file
+        Write sequence fingerprints from CIGAR format in BAM file.
+
         :returns sequences_list_base: fingerprints per bin per sequence as one string
         :returns sequence_pos_list: fingerprints per bin per sequence as list of strings
         :rtype: list

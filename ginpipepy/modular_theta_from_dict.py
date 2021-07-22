@@ -1,29 +1,30 @@
 #modular_ttheta_from_dict.py
 
 """
+Calculate population size estimate from bins.
+
 Created on Sun Jul 12 11:56:45 2020
 
 @author: Maria Trofimova
-
-Based on: Bhavin S Khatri, Austin Burt, Robust Estimation of Recent
-Effective Population Size from Number of Independent Origins in Soft
-Sweeps, Molecular Biology and Evolution,
-Volume 36, Issue 9, September 2019,
-Pages 2040–2052, https://doi.org/10.1093/molbev/msz081
 """
 
-"""
-Metrics from bins
-"""
 import numpy as np
 import math
 from scipy import optimize
 
 
 class analyzeTrajectory:
+    """
+    analyzeTrajectory class.
+
+    Calculate population size estimate from bins
+    Based on: https://doi.org/10.1093/molbev/msz081
+    """
 
     def __init__(self, dict_traj, mut_proportion, num_days_per_bin, initSeq):
-        '''Class: calculate point-wise constant effective population size estimate
+        """
+        Calculate point-wise constant effective population size estimate.
+
         :param dict_traj: list of sequence fingerprints in format ('id','MUT_POS_1>MUT_BASE-MUT_POS_2>MUT_BASE-...')  
         :type dict_traj: list
         :param mut_proportion: proportion of mutant bases in entire data set
@@ -32,25 +33,25 @@ class analyzeTrajectory:
         :type num_days_per_bin: list[int]
         :param initSeq: initial sequence
         :type initSeq: str
-        '''
+        """
         self.dict_traj = dict_traj
         self.initSeq = initSeq
         self.mut_proportion = mut_proportion
         self.delta_t = num_days_per_bin
 
     def _makeOriginsFirstOcc(self, mutSeq, mutantsCount):
-        '''
-        Find first occurence of mutant - origins from sequences not recorded
-        before current bin
+        """
+        Find first occurence of mutant - origins from sequences not recorded before current bin.
+
         :param mutSeq: dictionary with key - sequence, value - list of length
-        t - number of bins, with 1 if sequence present in the bin and 0 otherwise
+            t - number of bins, with 1 if sequence present in the bin and 0 otherwise
         :type mutSeq: dict
         :param mutantsCount: list of length t - number of bins, with
-        number of mutant sequences in bin
+            number of mutant sequences in bin
         :type mutantsCount: list
         :returns: list of length t - number of unique first occuring sequences in bin
         :rtype: list
-        '''
+        """
         origins = []
         firstOcc = np.zeros(len(mutSeq))
         for i,(key,val) in enumerate(mutSeq.items()):
@@ -75,16 +76,17 @@ class analyzeTrajectory:
         return bin_indices
 
     def _makeOrigins(self, mutSeq, mutantsCount):
-        '''
-        Find all occurences of mutant - count unique mutant types in current bin
+        """
+        Find all occurences of mutant - count unique mutant types in current bin.
+
         :param mutSeq: dictionary with key - sequence, value - list of length
-        t - number of bins, with 1 if sequence present in the bin and 0 otherwise
+            t - number of bins, with 1 if sequence present in the bin and 0 otherwise
         :param mutantsCount: list of lengtth t - number of bins, with
-        number of mutant sequences in bin
+            number of mutant sequences in bin
         :type mutSeq: dict
         :returns: list of length t - number of unique sequences in bin
         :rtype: list
-        '''
+        """
         origins = []
         occurence = [[] for i in range(len(mutSeq))]
         for i,(key,val) in enumerate(mutSeq.items()):
@@ -98,8 +100,9 @@ class analyzeTrajectory:
         return origins
 
     def _fmle(self,x,nu,ns):
-        '''
-        Function of the estimate for root finding
+        """
+        Estimate function for root finding.
+
         :param nu: number of origins
         :type nu: int
         :param ns: number of mutant sequences
@@ -108,7 +111,7 @@ class analyzeTrajectory:
         :type x: float
         :returns: population size estimate
         :rtype: float
-        '''
+        """
         a = float(x*np.log(1+ns/x))
         b = np.math.factorial(nu)
         #c = np.exp(-(x*np.log(1+ns/x)))
@@ -118,8 +121,9 @@ class analyzeTrajectory:
         return -(d-dd-e)
 
     def _fmle_short(self,x,nu,ns):
-        '''
-        Function of the estimate for root finding
+        """
+        Estimate function for root finding.
+
         :param nu: number of origins
         :type nu: int
         :param ns: number of mutant sequences
@@ -128,12 +132,13 @@ class analyzeTrajectory:
         :type x: float
         :returns: population size estimate
         :rtype: float
-        '''
+        """
         return (nu-(x*np.log(1+ns/x)))**2
 
     def _optimize(self, nu, ns):
         """
-        Optimization routines
+        Optimize function.
+
         :param nu: number of origins
         :type nu: int
         :param ns: number of mutant sequences
@@ -156,14 +161,16 @@ class analyzeTrajectory:
 
     def analyzeBinsMLE(self):
         """
-        Estimates joint parameter 2Nmu from data
+        Estimate joint parameter 2Nmu from data.
+
         Count mutant sequences per bin and creates sequence dictionary with
-        bin indices where the mutant was found.
+           bin indices where the mutant was found.
+
         :param:
         :returns: thetas list - parameter estimates; list variance - variance estimates
-        from maximum likelihood estimate, variance_size - 1/size_of_bin, num_mut - number of
-        mutants per bin, num_seqs - number of sequences per bin, origins - number
-        of origins per bin
+            from maximum likelihood estimate, variance_size - 1/size_of_bin, num_mut - number of
+            mutants per bin, num_seqs - number of sequences per bin, origins - number
+            of origins per bin
         :rtype: list
         """
         # Number of (mutated) sequences

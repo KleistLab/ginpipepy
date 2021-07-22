@@ -1,12 +1,13 @@
 #sam_to_bins_modular.py
 
 """
+Bin sequences in a SAM file.
+
 Created on Tue Mar  3 17:19:40 2020
 
 @authors: Yannick Duport, Maria Trofimova
-
-Getting base counts with pysam and binning routine
 """
+
 import csv
 import datetime
 from datetime import date
@@ -21,8 +22,16 @@ strptime = datetime.datetime.strptime
 
 
 class SAM:
+    """
+    SAM class.
+
+    Bin sequences in a SAM file
+    """
+
     def __init__(self, samfile_path, bins_dir, meta_dir, num_per_bin, days_per_bin, seq_name):
-        '''Class implementing splitting of SAM file into temporal bins
+        """
+        Split of SAM file into temporal bins.
+
         :param samfile_path: path to SAM/BAM file containing the entire data set
         :type samfile_path: str
         :param bins_dir: directory where the bins will be written to and stored
@@ -36,7 +45,7 @@ class SAM:
         :param seq_name: name of reference sequence that the sequence set was aligned to
         :type seq_name: str
         :rtype: dict
-        '''
+        """
         self.samfile_path = samfile_path
         self.bins_dir = bins_dir
         self.meta_dir = meta_dir
@@ -61,11 +70,12 @@ class SAM:
         return sam_dict
 
     def _create_sequence_map(self):
-        '''
-        WORKAROUND: make binning faster, by mapping for each unique sequence its index
+        """
+        Bin by mapping index for each unique sequence.
+
         :returns: sequence dictionary
         :rtype: dict
-        '''
+        """
         # crate map of each sequence where to find it
         seq_dict = {}
         for idx, attr in self.sam_dict.items():
@@ -85,9 +95,12 @@ class SAM:
                 writer.writerow([idx_dates[i][2],idx_dates[i][1]])
 
     def _index_dates(self):
-        """Extracts headers, dates and index from a samfile
-        Extracts headers, dates, index from samfile, sorts them by date and adds them to a dictionary
-        Dictionary keys contain the index from the sorted dates, values are header, date, index
+        """
+        Extract headers, dates and index from a samfile.
+
+        Extract headers, dates, index from samfile, sorts them by date and adds them to a dictionary.
+        Dictionary keys contain the index from the sorted dates, values are header, date, index.
+
         :returns: dict[sorted_index]={header:string, date:string, index:int}
         :rtype: dict
         """
@@ -129,7 +142,8 @@ class SAM:
         return sam_dict
 
     def _create_filenames(self, folder, n_bins, infix=None):
-        """Creates folder, files and returns filenames
+        """
+        Create folder, files and returns filenames.
 
         :param method: name of folder/binning method
         :type method: str
@@ -228,7 +242,8 @@ class SAM:
 
 
     def bin_eq_size_names(self):
-        """Creates bins of equal size (n=10), but files with same name are treated as one
+        """
+        Create bins of equal size (n=10), but files with same name are treated as one.
 
         :returns:
         """
@@ -269,7 +284,8 @@ class SAM:
 
 
     def bin_eq_days(self, fuzzy=False):
-        """Create bins containing equal number of days
+        """
+        Create bins containing equal number of days.
 
         :param fuzzy: run fuzzy binning - sequences on border dates of bins assigned to bins randomly
         :type fuzzy: bool
@@ -330,7 +346,9 @@ class SAM:
 
 
     def bin_cal_week(self):
-        """Binning by calendar week
+        """
+        Create bins by calendar week.
+
         :returns:
         """
         n_reads = len(self.sam_dict)
