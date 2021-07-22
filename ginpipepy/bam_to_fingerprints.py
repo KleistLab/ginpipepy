@@ -17,7 +17,7 @@ class SAMtoFP:
     """
     SAMtoFP class.
 
-    Tranlsate CIGAR strings to fingerprint strings    
+    Tranlsate CIGAR strings to fingerprint strings  
     """
 
     def __init__(self, filename, reffile, refname):
@@ -35,7 +35,7 @@ class SAMtoFP:
         self.reference = reffile
         self.ref_name = refname
 
-    def _ambiguousDict(self, base, refbase):
+    def _ambiguous_dict(self, base, refbase):
         """
         Call ambiguous bases if reference base is not included in the possible calls.
 
@@ -76,7 +76,7 @@ class SAMtoFP:
         return variant
 
 
-    def _cigarToFP(self, seq, cigar, start, name):
+    def _cigar_to_fp(self, seq, cigar, start, name):
         """
         Translate CIGAR strings to sequence fingerprints in format.
 
@@ -163,7 +163,7 @@ class SAMtoFP:
                         # Record mutant base
                         if str(alt_base) in amblist:
                             # Ambiguous call
-                            bcall = self._ambiguousDict(str(alt_base), ref_seq[counter])
+                            bcall = self._ambiguous_dict(str(alt_base), ref_seq[counter])
                             if bcall==ref_seq[counter]:
                                 pass
                             else:
@@ -184,7 +184,7 @@ class SAMtoFP:
         return mutantsstrbase, lref, mutants_pairs_list
 
 
-    def writeFP(self):
+    def write_fp(self):
         """
         Write sequence fingerprints from CIGAR format in BAM file.
 
@@ -212,7 +212,7 @@ class SAMtoFP:
             # Trim with cigar string
             cigar = read.cigartuples
 
-            mutants_string, lref, mutants_pairs_list = self._cigarToFP(seq, cigar, start, name)
+            mutants_string, lref, mutants_pairs_list = self._cigar_to_fp(seq, cigar, start, name)
 
             sequences_list_base.append((name,mutants_string))
             sequence_pair_list.append(mutants_pairs_list)

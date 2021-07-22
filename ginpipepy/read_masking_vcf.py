@@ -33,7 +33,7 @@ class VCFreader:
 		self.filename = filename
 		self.reffile = reffile
 
-	def _getMaskingFromVCF(self):
+	def _get_masking_from_vcf(self):
 		"""Get a list of bases from a Variant Calling File that have a FILTER tag.
             
 		'mask'
@@ -48,7 +48,7 @@ class VCFreader:
 				masking_list.append(int(record.POS))
 		return masking_list
 
-	def maskBasesInFP(self):
+	def mask_bases_in_fp(self):
 		"""Remove mutated poositions from fingerprints based on Variant Calling.
         
         File, where FILTER tag has value 'mask' and returns a filtered fingerprint
@@ -56,7 +56,7 @@ class VCFreader:
         :returns: set of filtered fingerprints in format (id_string,fp_string)
         :rtype: list
         """
-		masking_list = self._getMaskingFromVCF()
+		masking_list = self._get_masking_from_vcf()
 		newSeqSets = []
 		for t, seqSet in enumerate(self.fp_dict):
 			if len(seqSet)!=0:

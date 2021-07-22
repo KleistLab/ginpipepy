@@ -32,7 +32,7 @@ class parameterEstimation:
         self.freqCutoff = freqCutoff
         self.reffile = reffile
 
-    def _getAltPosCounts(self):
+    def _get_alt_pos_counts(self):
         """
         Get number of mutant bases in reference by sequence fingerprints.
 
@@ -57,7 +57,7 @@ class parameterEstimation:
 
         return positions
 
-    def _countMutants(self,seqSets):
+    def _count_mutants(self,seqSets):
         """
         Count mutant sequences in sample.
 
@@ -83,7 +83,7 @@ class parameterEstimation:
                         num_seqs += 1
         return mut_count, num_seqs
 
-    def _filterSingletons(self):
+    def _filter_singletons(self):
         """
         Filter our mutant positions that only occur few times in entire sample.
 
@@ -94,7 +94,7 @@ class parameterEstimation:
         filteredSeqSets = []
         # First identify positions that pop up below a threshold
 
-        positions = self._getAltPosCounts()
+        positions = self._get_alt_pos_counts()
 
         # Identify not so frequent mutant positions
         minor_positions = []
@@ -139,16 +139,16 @@ class parameterEstimation:
         :rtype: list
         """
         # In one of the trajectories - count mutants and number of sequences
-        mut_count_pre, num_seqs_pre = self._countMutants(self.seqSets)
+        mut_count_pre, num_seqs_pre = self._count_mutants(self.seqSets)
         print("           Before filtering: ")
         print("              Number of sequences: ",num_seqs_pre)
         print("              Number of mutant sequences: ",mut_count_pre)
 
-        filteredSets1 = self._filterSingletons()
+        filteredSets1 = self._filter_singletons()
         # Replace sequence set
         self.seqSets = filteredSets1
 
-        mut_count_post, num_seqs_post = self._countMutants(filteredSets1)
+        mut_count_post, num_seqs_post = self._count_mutants(filteredSets1)
         print("           After filtering: ")
         print("              Number of sequences: ",num_seqs_post)
         print("              Number of mutant sequences: ",mut_count_post)

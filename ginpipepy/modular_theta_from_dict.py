@@ -39,7 +39,7 @@ class analyzeTrajectory:
         self.mut_proportion = mut_proportion
         self.delta_t = num_days_per_bin
 
-    def _makeOriginsFirstOcc(self, mutSeq, mutantsCount):
+    def _make_origins_first_occ(self, mutSeq, mutantsCount):
         """
         Find first occurence of mutant - origins from sequences not recorded before current bin.
 
@@ -75,7 +75,7 @@ class analyzeTrajectory:
                 bin_indices.append(i)
         return bin_indices
 
-    def _makeOrigins(self, mutSeq, mutantsCount):
+    def _make_origins(self, mutSeq, mutantsCount):
         """
         Find all occurences of mutant - count unique mutant types in current bin.
 
@@ -159,7 +159,7 @@ class analyzeTrajectory:
             sol = optimize.minimize(self._fmle_short, x0=x0, method='trust-constr', args=(nu,ns), constraints=con1)
             return sol.x[0]
 
-    def analyzeBinsMLE(self):
+    def analyze_bins_mle(self):
         """
         Estimate joint parameter 2Nmu from data.
 
@@ -225,7 +225,7 @@ class analyzeTrajectory:
                 num_mut.append(mut_count)
 
 
-        origins = self._makeOrigins(mutSeqDict, num_mut)
+        origins = self._make_origins(mutSeqDict, num_mut)
         #Estimate effective population size from data
         thetas = []
         #Variance
