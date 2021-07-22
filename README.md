@@ -21,7 +21,7 @@ This Python package is used by GInPipe [[1]](#1) - Genome-based Incidence Estima
 *ginpipepy* can be installed using **pip**:
 
 ```
-pip install git+https://github.com/trofimovamw/ginpipepy
+pip install git+https://github.com/KleistLab/ginpipepy
 ```
  
 ## Reference
