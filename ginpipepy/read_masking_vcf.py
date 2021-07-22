@@ -8,16 +8,17 @@ Created on Mon Jul 13 15:15:41 2021
 @author: Maria Trofimova
 """
 
+
 import vcf
 
 class VCFreader:
-	"""
-	VCFreader class
+    """
+    VCFreader class
 
     Read in Variant calling file and mask mutated bases
-	"""
+    """
 
-	def __init__(self, filename, reffile, fp_dict):
+    def __init__(self, filename, reffile, fp_dict):
         """
         Class: read in Variant Calling File and remove masked bases from sequence fingerprints.
             
@@ -29,50 +30,50 @@ class VCFreader:
             ('id','MUT_POS_1>MUT_BASE-MUT_POS_2>MUT_BASE-...')
         :type fp_dict: list
         """
-		self.fp_dict = fp_dict
-		self.filename = filename
-		self.reffile = reffile
+        self.fp_dict = fp_dict
+        self.filename = filename
+        self.reffile = reffile
 
-	def _get_masking_from_vcf(self):
-		"""Get a list of bases from a Variant Calling File that have a FILTER tag.
+    def _get_masking_from_vcf(self):
+        """Get a list of bases from a Variant Calling File that have a FILTER tag.
             
-		'mask'
+        'mask'
         :returns: posiions of bases that should be masked
         :rtype: list
         """
-		vcfile = vcf.Reader(open(self.filename),'r')
-		masking_list = []
-		for record in vcfile:
-			operation = record.FILTER
-			if 'mask' in operation:
-				masking_list.append(int(record.POS))
-		return masking_list
+        vcfile = vcf.Reader(open(self.filename),'r')
+        masking_list = []
+        for record in vcfile:
+            operation = record.FILTER
+            if 'mask' in operation:
+                masking_list.append(int(record.POS))
+        return masking_list
 
-	def mask_bases_in_fp(self):
-		"""Remove mutated poositions from fingerprints based on Variant Calling.
+    def mask_bases_in_fp(self):
+        """Remove mutated poositions from fingerprints based on Variant Calling.
         
         File, where FILTER tag has value 'mask' and returns a filtered fingerprint
         list
         :returns: set of filtered fingerprints in format (id_string,fp_string)
         :rtype: list
         """
-		masking_list = self._get_masking_from_vcf()
-		newSeqSets = []
-		for t, seqSet in enumerate(self.fp_dict):
-			if len(seqSet)!=0:
-				newSeqSet = []
-				for i, seq in enumerate(seqSet):
-					if seq[1]!='':
-						new_str = []
-						split_fp = seq[1].split("-")
-						for pos in split_fp:
-							spl = pos.split(">")
-							posit = int(spl[0])
-							if not posit in masking_list:
-								new_str.append(pos)
-						new_str_j = '-'.join(new_str)
-						newSeqSet.append((seq[0],new_str_j))
-					else:
-						newSeqSet.append(seq)
-				newSeqSets.append(newSeqSet)
-		return newSeqSets
+        masking_list = self._get_masking_from_vcf()
+        newSeqSets = []
+        for t, seqSet in enumerate(self.fp_dict):
+            if len(seqSet)!=0:
+                newSeqSet = []
+                for i, seq in enumerate(seqSet):
+                    if seq[1]!='':
+                        new_str = []
+                        split_fp = seq[1].split("-")
+                        for pos in split_fp:
+                            spl = pos.split(">")
+                            posit = int(spl[0])
+                            if not posit in masking_list:
+                                new_str.append(pos)
+                        new_str_j = '-'.join(new_str)
+                        newSeqSet.append((seq[0],new_str_j))
+                    else:
+                        newSeqSet.append(seq)
+                newSeqSets.append(newSeqSet)
+        return newSeqSets

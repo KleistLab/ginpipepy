@@ -8,6 +8,7 @@ Created on Sun Jul 12 11:56:45 2020
 @author: Maria Trofimova
 """
 
+
 import numpy as np
 import math
 from scipy import optimize

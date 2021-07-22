@@ -8,6 +8,7 @@ Created on Mon Jul 13 15:05:41 2020
 @author: Maria Trofimova
 """
 
+
 import pysam
 import random
 import numpy as np

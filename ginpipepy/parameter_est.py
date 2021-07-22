@@ -9,6 +9,7 @@ Created on Mon Nov 30 12:50:41 2020
 """
 
 
+
 class parameterEstimation:
     """
     parameterEstimation class.
