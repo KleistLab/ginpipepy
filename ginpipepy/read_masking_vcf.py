@@ -21,7 +21,7 @@ class VCFreader:
     def __init__(self, filename, reffile, fp_dict):
         """
         Class: read in Variant Calling File and remove masked bases from sequence fingerprints.
-            
+
         :param filename: path to Variant Calling File
         :type filename: str
         :param reffile: path to reference file (that VCF belongs to)
